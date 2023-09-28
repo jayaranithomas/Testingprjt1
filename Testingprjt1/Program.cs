@@ -160,7 +160,7 @@ else
 
 //Verify the delete functionality of Time and Material Module
 //Click on the Delete Button of the last record
-IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[6]/td[last()]/a[2]"));
+IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
 deleteButton.Click();
 driver.SwitchTo().Alert().Accept();
 
