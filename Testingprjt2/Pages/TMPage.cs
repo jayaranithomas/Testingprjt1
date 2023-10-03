@@ -1,9 +1,6 @@
-﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using Testingprjt2.Utilities;
 
 namespace Testingprjt2.Pages
 {
@@ -11,6 +8,7 @@ namespace Testingprjt2.Pages
     {
         public void createTMrecord(IWebDriver driver)
         {
+            Wait.WaitToBeClickable(driver, "XPath", "//*[@id=\"container\"]/p/a", 5);
             //Click on the Create New Button
             IWebElement createNewButton = driver.FindElement(By.XPath("//*[@id=\"container\"]/p/a"));
             createNewButton.Click();
@@ -18,12 +16,13 @@ namespace Testingprjt2.Pages
             // Click on the Typecode Dropdown
             IWebElement tcDropdown = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[1]"));
             tcDropdown.Click();
-
+            
             // Select Time Option from the Material Dropdown
             IWebElement timeOption = driver.FindElement(By.XPath("//*[@id=\"TypeCode_listbox\"]/li[2]"));
             timeOption.Click();
 
             //Enter the Code
+
             IWebElement codeTextBox = driver.FindElement(By.Id("Code"));
             codeTextBox.SendKeys("NewRecord");
 
@@ -47,14 +46,15 @@ namespace Testingprjt2.Pages
             lastrRecordButton.Click();
 
             IWebElement lastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            if (lastRecord.Text == "NewRecord")
+            /*if (lastRecord.Text == "NewRecord")
             {
-                Console.WriteLine("Successfull");
+                Assert.Pass("Record Creation Successfull");
             }
             else
             {
-                Console.WriteLine("NOT Successfull");
-            }
+                Assert.Fail("Record Creation NOT Successfull");
+            }*/
+            Assert.That(lastRecord.Text == "NewRecord", "Record Creation Not Successfull");
 
             Thread.Sleep(5000);
         }
@@ -62,6 +62,9 @@ namespace Testingprjt2.Pages
         {
             //Verify the Edit functionality of Time and Material Module
             //Click on the Edit Button of the last record
+            Thread.Sleep(5000);
+            IWebElement newLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            newLastPageButton.Click();
             IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
             editButton.Click();
 
@@ -70,16 +73,18 @@ namespace Testingprjt2.Pages
             // Click on the Dropdown
             IWebElement typeCodeDropdown = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[1]"));
             typeCodeDropdown.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
 
             // Select material Option from the typecode Dropdown
             IWebElement materialOption = driver.FindElement(By.XPath("//*[@id=\"TypeCode_listbox\"]/li[1]"));
             materialOption.Click();
+            Thread.Sleep(5000);
 
             //Edit the Code
             IWebElement codeEditTextBox = driver.FindElement(By.Id("Code"));
             codeEditTextBox.Clear();
             codeEditTextBox.SendKeys("CodeEdited");
+            Thread.Sleep(1000);
 
             //Edit the Description
             IWebElement descriptionEditTextBox = driver.FindElement(By.Id("Description"));
@@ -97,31 +102,34 @@ namespace Testingprjt2.Pages
             editpricetextbox.SendKeys("300.50");
 
             //save the updates
-
-            IWebElement newSaveButton = driver.FindElement(By.Id("SaveButton"));
+            Thread.Sleep(2000);
+            IWebElement newSaveButton = driver.FindElement(By.XPath("//*[@id=\"SaveButton\"]"));
             newSaveButton.Click();
-
             Thread.Sleep(2000);
 
             //Verify if the edit has done
-            IWebElement newLastPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
-            newLastPageButton.Click();
-
+            IWebElement newLPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            newLPageButton.Click();
+            Thread.Sleep(1000);
             IWebElement newLastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-
-            if (newLastRecord.Text == "CodeEdited")
+           
+           /* if (newLastRecord.Text == "CodeEdited")
             {
                 Console.WriteLine("Edit Successfull");
             }
             else
             {
                 Console.WriteLine("Edit NOT Successfull");
-            }
+            }*/
+            Assert.That(newLastRecord.Text == "CodeEdited", "Record Editing was Not Successfull");
         }
         public void deleteTMRecord(IWebDriver driver)
         {
             //Verify the delete functionality of Time and Material Module
             //Click on the Delete Button of the last record
+            Thread.Sleep(5000);
+            IWebElement LPButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            LPButton.Click();
             IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
             deleteButton.Click();
 
@@ -137,14 +145,15 @@ namespace Testingprjt2.Pages
 
             IWebElement newLastRec = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            if (newLastRec.Text != "CodeEdited")
+           /* if (newLastRec.Text != "CodeEdited")
             {
                 Console.WriteLine("Delete Successfull");
             }
             else
             {
                 Console.WriteLine("Delete NOT Successfull");
-            }
+            }*/
+            Assert.That(newLastRec.Text != "CodeEdited", "Record Deletion was Not Successfull");
         }
     }
 }

@@ -1,15 +1,11 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Testingprjt2.Utilities;
 
 namespace Testingprjt2.Pages
 {
     public class LoginPage
     {
-        public void LoginActons(IWebDriver driver) 
+        public void LoginActons(IWebDriver driver)
         {
             //navigate to the turnup portal login page
             driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login");
@@ -18,6 +14,7 @@ namespace Testingprjt2.Pages
             driver.Manage().Window.Maximize();
 
             //identify the username field
+            Wait.WaitToBeVisible(driver, "Id", "UserName", 5);
             IWebElement userNameTextBox = driver.FindElement(By.Id("UserName"));
 
             //Enter the username
@@ -34,8 +31,9 @@ namespace Testingprjt2.Pages
 
             //click on the login button
             loginButton.Click();
+            //driver.SwitchTo().Alert().Accept();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
         }
     }
 }
