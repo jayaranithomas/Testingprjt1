@@ -1,12 +1,12 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using Testingprjt2.Utilities;
+using SpecFlowProject1Demo.Utilities;
 
-namespace Testingprjt2.Pages
+namespace SpecFlowProject1Demo.Pages
 {
     public class TMPage
     {
-        public void createTMrecord(IWebDriver driver)
+        public void createTMrecord(IWebDriver driver, string code, string description, string price)
         {
             Wait.WaitToBeClickable(driver, "XPath", "//*[@id=\"container\"]/p/a", 5);
             //Click on the Create New Button
@@ -24,15 +24,15 @@ namespace Testingprjt2.Pages
             //Enter the Code
 
             IWebElement codeTextBox = driver.FindElement(By.Id("Code"));
-            codeTextBox.SendKeys("NewRecord");
+            codeTextBox.SendKeys(code);
 
             //Enter the Description
             IWebElement descriptionTextBox = driver.FindElement(By.Id("Description"));
-            descriptionTextBox.SendKeys("Desc NewRecord");
+            descriptionTextBox.SendKeys(description);
 
             //Enter the Price
             IWebElement priceTextBox = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
-            priceTextBox.SendKeys("100.00");
+            priceTextBox.SendKeys(price);
 
             //Click on the Save Button
             IWebElement saveButton = driver.FindElement(By.Id("SaveButton"));
@@ -40,7 +40,11 @@ namespace Testingprjt2.Pages
 
             Thread.Sleep(5000);
 
-            //Verify if the new record ha been created Successfully
+            
+        }
+        public void AssertCreateTMrecord(IWebDriver driver, string code)
+        {
+            //Verify if the new record has been created Successfully
 
             IWebElement lastrRecordButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             lastrRecordButton.Click();
@@ -54,11 +58,11 @@ namespace Testingprjt2.Pages
             {
                 Assert.Fail("Record Creation NOT Successfull");
             }*/
-            Assert.That(lastRecord.Text == "NewRecord", "Record Creation Not Successfull");
+            Assert.That(lastRecord.Text == code, "Record Creation Not Successfull");
 
             Thread.Sleep(5000);
         }
-        public void editTMRecord(IWebDriver driver)
+        public void editTMRecord(IWebDriver driver, string code, string description, string price)
         {
             //Verify the Edit functionality of Time and Material Module
             //Click on the Edit Button of the last record
@@ -83,13 +87,13 @@ namespace Testingprjt2.Pages
             //Edit the Code
             IWebElement codeEditTextBox = driver.FindElement(By.Id("Code"));
             codeEditTextBox.Clear();
-            codeEditTextBox.SendKeys("CodeEdited");
+            codeEditTextBox.SendKeys(code);
             Thread.Sleep(1000);
 
             //Edit the Description
             IWebElement descriptionEditTextBox = driver.FindElement(By.Id("Description"));
             descriptionEditTextBox.Clear();
-            descriptionEditTextBox.SendKeys("Desc EditedRecord");
+            descriptionEditTextBox.SendKeys(description);
 
             Thread.Sleep(1000);
 
@@ -99,7 +103,7 @@ namespace Testingprjt2.Pages
             editpriceoverlappingtag.Click();
             editpricetextbox.Clear();
             editpriceoverlappingtag.Click();
-            editpricetextbox.SendKeys("300.50");
+            editpricetextbox.SendKeys(price);
 
             //save the updates
             Thread.Sleep(2000);
@@ -107,21 +111,25 @@ namespace Testingprjt2.Pages
             newSaveButton.Click();
             Thread.Sleep(2000);
 
+            
+        }
+        public void AssertEditTMrecord(IWebDriver driver, string code)
+        {
             //Verify if the edit has done
             IWebElement newLPageButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             newLPageButton.Click();
             Thread.Sleep(1000);
             IWebElement newLastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-           
-           /* if (newLastRecord.Text == "CodeEdited")
-            {
-                Console.WriteLine("Edit Successfull");
-            }
-            else
-            {
-                Console.WriteLine("Edit NOT Successfull");
-            }*/
-            Assert.That(newLastRecord.Text == "CodeEdited", "Record Editing was Not Successfull");
+
+            /* if (newLastRecord.Text == "CodeEdited")
+             {
+                 Console.WriteLine("Edit Successfull");
+             }
+             else
+             {
+                 Console.WriteLine("Edit NOT Successfull");
+             }*/
+            Assert.That(newLastRecord.Text == code, "Record Editing was Not Successfull");
         }
         public void deleteTMRecord(IWebDriver driver)
         {
@@ -138,6 +146,10 @@ namespace Testingprjt2.Pages
 
             Thread.Sleep(5000);
 
+            
+        }
+        public void AssertDeleteTMrecord(IWebDriver driver, string code)
+        {
             //Verify if the delete has done
             //IWebElement LastPButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             //LastPButton.Click();
@@ -145,15 +157,15 @@ namespace Testingprjt2.Pages
 
             IWebElement newLastRec = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-           /* if (newLastRec.Text != "CodeEdited")
-            {
-                Console.WriteLine("Delete Successfull");
-            }
-            else
-            {
-                Console.WriteLine("Delete NOT Successfull");
-            }*/
-            Assert.That(newLastRec.Text != "CodeEdited", "Record Deletion was Not Successfull");
+            /* if (newLastRec.Text != "CodeEdited")
+             {
+                 Console.WriteLine("Delete Successfull");
+             }
+             else
+             {
+                 Console.WriteLine("Delete NOT Successfull");
+             }*/
+            Assert.That(newLastRec.Text != code, "Record Deletion was Not Successfull");
         }
     }
 }
